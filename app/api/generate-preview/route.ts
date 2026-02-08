@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { z } from 'zod';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy-initialize OpenAI client (avoid build-time errors when env var is missing)
+function getOpenAIClient() {
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+}
 
 const RequestSchema = z.object({
   generatedPrompt: z.string().min(1, 'Generated prompt is required'),
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
     console.log('Generating preview image with GPT-4o...');
     console.log('Prompt length:', imagePrompt.length);
 
-    const result = await openai.images.generate({
+    const result = await getOpenAIClient().images.generate({
       model: 'gpt-image-1',
       prompt: imagePrompt,
       n: 1,

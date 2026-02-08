@@ -9,10 +9,10 @@ import {
 } from '@/constants/wizard-options';
 import type { ComponentOption } from '@/lib/types';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy-initialize OpenAI client (avoid build-time errors when env var is missing)
+function getOpenAIClient() {
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+}
 
 // Request validation schema
 const RequestSchema = z.object({
@@ -69,7 +69,7 @@ Return ONLY valid JSON matching this structure. Be conservative with componentId
     const userPrompt = `Analyze this website project description:\n\n${content}`;
 
     // Call OpenAI API
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAIClient().chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: systemPrompt },
