@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'PromptCraft - AI-Powered Prompt Builder',
+  title: 'Prompticle - AI-Powered Prompt Builder',
   description:
     'Generate optimized prompts for Bolt.new, Lovable, and v0 with visual wizard or AI analysis',
   keywords: ['prompt builder', 'AI', 'Bolt.new', 'Lovable', 'v0', 'website builder'],

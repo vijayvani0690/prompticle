@@ -6,10 +6,11 @@ import { cn } from '@/lib/utils';
 import type { WizardStep } from '@/lib/types';
 
 const STEPS: { id: WizardStep; label: string; number: number }[] = [
-  { id: 'type', label: 'Type', number: 1 },
-  { id: 'style', label: 'Style', number: 2 },
-  { id: 'layout', label: 'Layout', number: 3 },
-  { id: 'components', label: 'Components', number: 4 },
+  { id: 'brief', label: 'Brief', number: 1 },
+  { id: 'type', label: 'Type', number: 2 },
+  { id: 'style', label: 'Style', number: 3 },
+  { id: 'layout', label: 'Layout', number: 4 },
+  { id: 'components', label: 'Components', number: 5 },
 ];
 
 export function WizardProgress() {
@@ -17,6 +18,8 @@ export function WizardProgress() {
 
   const isStepComplete = (step: WizardStep): boolean => {
     switch (step) {
+      case 'brief':
+        return true; // Brief is always considered complete (it's optional)
       case 'type':
         return !!wizardState.websiteType;
       case 'style':

@@ -1,4 +1,4 @@
-# PromptCraft
+# Prompticle
 
 AI-powered prompt builder for website generation tools (Bolt.new, Lovable, v0).
 

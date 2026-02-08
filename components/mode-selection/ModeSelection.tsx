@@ -29,7 +29,7 @@ export function ModeSelection() {
         {/* Header */}
         <header className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            PromptCraft
+            Prompticle
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-2">
             AI-Powered Prompt Builder for Website Generation

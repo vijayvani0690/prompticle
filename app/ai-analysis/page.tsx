@@ -4,16 +4,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePromptStore } from '@/lib/store/prompt-store';
 import { PromptPreviewPanel } from '@/components/shared/PromptPreviewPanel';
-import { PromptGenerator } from '@/lib/prompts/generator';
 import { PRDInput } from '@/components/ai-analysis/PRDInput';
 import { AnalysisResult } from '@/components/ai-analysis/AnalysisResult';
 import { Button } from '@/components/ui/button';
-import { Home } from 'lucide-react';
+import { Home, PenLine } from 'lucide-react';
 
 export default function AIAnalysisPage() {
   const router = useRouter();
   const {
     prdInput,
+    wizardState,
     aiAnalysisResult,
     selectedPlatform,
     setPRDInput,
@@ -59,10 +59,6 @@ export default function AIAnalysisPage() {
     setError(null);
   };
 
-  const generatedPrompt = aiAnalysisResult
-    ? PromptGenerator.fromAIAnalysis(aiAnalysisResult, selectedPlatform)
-    : null;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       {/* Header */}
@@ -82,6 +78,14 @@ export default function AIAnalysisPage() {
           </div>
           {aiAnalysisResult && (
             <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAIAnalysisResult(null)}
+              >
+                <PenLine className="w-4 h-4 mr-2" />
+                Edit Requirements
+              </Button>
               <Button variant="outline" size="sm" onClick={handleReset}>
                 Start Over
               </Button>
@@ -118,7 +122,8 @@ export default function AIAnalysisPage() {
           <div className="hidden lg:block">
             <div className="sticky top-24">
               <PromptPreviewPanel
-                prompt={generatedPrompt}
+                wizardState={wizardState}
+                prdInput={prdInput}
                 selectedPlatform={selectedPlatform}
                 onPlatformChange={setSelectedPlatform}
               />
@@ -131,7 +136,8 @@ export default function AIAnalysisPage() {
       {aiAnalysisResult && (
         <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg">
           <PromptPreviewPanel
-            prompt={generatedPrompt}
+            wizardState={wizardState}
+            prdInput={prdInput}
             selectedPlatform={selectedPlatform}
             onPlatformChange={setSelectedPlatform}
             className="max-h-[300px]"

@@ -1,0 +1,98 @@
+PromptCraft v1.0 (MVP-1) - Complete Overview
+1. What We've Built
+PromptCraft is an AI-powered prompt builder that generates optimized, platform-specific prompts for website builders like Bolt.new, Lovable, and v0 by Vercel. Users describe what they want through a visual wizard or paste a PRD for AI analysis, and the app generates a tailored, ready-to-use prompt.
+
+Features Delivered
+A. Visual Wizard Mode (4-step guided flow)
+
+Step 1 - Website Type: Choose from 6 types (Landing Page, E-Commerce, Portfolio, SaaS Dashboard, Blog, Documentation) with preview images and modal dialogs
+Step 2 - Visual Style: Choose from 6 styles (Modern Minimal, Bold & Dramatic, Corporate Professional, Futuristic & Tech, Playful & Fun, Luxury & Elegant) with dynamic images per website type (36 combinations) + click-to-preview modals
+Step 3 - Layout Structure: Choose from 4 layouts (Full-Width Hero, Split-Screen Hero, Bento Box Grid, Sidebar Layout) with dynamic images per website type + style (144 combinations) + click-to-preview modals
+Step 4 - Components: Multi-select from 19 components across 5 categories (Navigation, Content, Marketing, Forms, Other) with 3 required defaults (Navbar, Footer, Hero)
+B. AI Analysis Mode
+
+Paste any PRD text or use 3 built-in example PRDs (SaaS Project Management, Fashion E-Commerce, Photography Portfolio)
+Powered by OpenAI GPT-4o-mini with JSON mode
+Returns structured analysis with confidence score, extracted website type, style, layout, components, and reasoning
+Auto-populates wizard state from AI results
+"Edit in Wizard" to refine AI selections manually
+C. Real-Time Prompt Preview
+
+Sticky side panel (desktop) / fixed bottom panel (mobile)
+Live updates as selections change
+3 platform-specific templates with different formatting and emphasis:
+Bolt.new: Concise, React + Tailwind + TypeScript focused
+Lovable: Detailed with full-stack considerations
+v0: Next.js App Router optimized with constraints format
+One-click copy with toast notification
+D. State Persistence
+
+All selections saved to localStorage
+Resume interrupted sessions
+Switch between modes without losing data
+2. Full Product Info
+Product Name	PromptCraft
+Version	0.1.0 (MVP-1)
+Type	Web Application
+Framework	Next.js 15.5 (App Router)
+Language	TypeScript (strict mode)
+UI Library	shadcn/ui + Radix UI primitives
+Styling	Tailwind CSS 3.4
+State Management	Zustand 5 with localStorage persistence
+AI Integration	OpenAI GPT-4o-mini
+Validation	Zod
+Icons	Lucide React
+Architecture
+
+app/
+├── page.tsx              → Homepage (server component)
+├── wizard/page.tsx       → Visual Wizard
+├── ai-analysis/page.tsx  → AI Analysis
+└── api/analyze-prd/      → GPT-4 API endpoint
+
+components/
+├── mode-selection/       → Homepage cards (2 files)
+├── wizard/               → 5 step components + progress bar
+├── ai-analysis/          → PRD input + result display
+├── shared/               → Prompt preview + platform switcher + spinner
+└── ui/                   → 14 shadcn/ui primitives
+
+lib/
+├── store/                → Zustand store
+├── types/                → TypeScript interfaces
+├── prompts/              → Generator class + 3 platform templates
+└── utils.ts              → Utility functions
+
+constants/
+├── wizard-options.ts     → All wizard data (types, styles, layouts, components, platforms)
+└── example-prds.ts       → 3 sample PRD templates
+By the Numbers
+Metric	Count
+TypeScript/TSX files	42
+Custom components	18
+UI primitives (shadcn)	14
+Routes	3 pages + 1 API
+Website types	6
+Visual styles	6
+Layouts	4
+Selectable components	19 (in 5 categories)
+Platform templates	3
+Example PRDs	3
+Visual style images	36 (6 types x 6 styles)
+Layout structure images	up to 144 (6 types x 6 styles x 4 layouts)
+Total image combinations	180+
+Environment Requirement
+
+OPENAI_API_KEY=sk-...   # Required for AI analysis feature
+Dev Commands
+
+npm run dev      # Start dev server
+npm run build    # Production build
+npm run start    # Start production
+npm run lint     # ESLint
+Key Technical Decisions
+Server/Client component separation - page.tsx as server component importing client ModeSelection
+Dynamic image path mapping - 3-dimensional lookup (type x style x layout) for contextual previews
+Zustand over Redux - Lightweight with built-in localStorage persistence
+GPT-4o-mini - Cost-effective AI analysis with structured JSON output
+shadcn/ui - Accessible, customizable, no lock-in

@@ -1,5 +1,5 @@
 /**
- * Core type definitions for PromptCraft application
+ * Core type definitions for Prompticle application
  */
 
 // Application mode selection
@@ -9,7 +9,7 @@ export type AppMode = 'wizard' | 'ai-analysis';
 export type Platform = 'bolt' | 'lovable' | 'v0';
 
 // Wizard step progression
-export type WizardStep = 'type' | 'style' | 'layout' | 'components';
+export type WizardStep = 'brief' | 'type' | 'style' | 'layout' | 'components';
 
 // Website type options
 export type WebsiteType =
@@ -120,6 +120,12 @@ export interface PromptStore {
   currentStep: WizardStep;
   selectedPlatform: Platform;
 
+  // AI prompt generation state
+  promptCache: PromptCache;
+  selectionsSnapshot: SelectionsSnapshot | null;
+  isGenerating: boolean;
+  generationError: string | null;
+
   // Actions
   setMode: (mode: AppMode) => void;
   setWizardState: (state: Partial<WizardState>) => void;
@@ -130,6 +136,21 @@ export interface PromptStore {
   nextStep: () => void;
   previousStep: () => void;
   reset: () => void;
+
+  // AI prompt generation actions
+  setPromptCache: (platform: Platform, data: BoltPromptStep[] | SinglePrompt) => void;
+  setSelectionsSnapshot: (snapshot: SelectionsSnapshot) => void;
+  setIsGenerating: (val: boolean) => void;
+  setGenerationError: (err: string | null) => void;
+  clearPromptCache: () => void;
+
+  // Preview image state
+  previewImage: PreviewImageState;
+
+  // Preview image actions
+  setPreviewImageUrl: (url: string | null) => void;
+  setIsGeneratingImage: (val: boolean) => void;
+  setImageGenerationError: (err: string | null) => void;
 }
 
 /**
@@ -150,4 +171,82 @@ export interface PromptContext {
   style: string;
   layout: string;
   components: string[];
+}
+
+// ==================== Preview Image ====================
+
+/**
+ * State for DALL-E website preview image generation
+ */
+export interface PreviewImageState {
+  url: string | null;
+  isGenerating: boolean;
+  error: string | null;
+}
+
+// ==================== AI Prompt Generation ====================
+
+/**
+ * Bolt returns array of incremental prompts (3-4 steps)
+ */
+export interface BoltPromptStep {
+  step: number;
+  title: string;
+  prompt: string;
+}
+
+/**
+ * Lovable/v0 return a single comprehensive prompt
+ */
+export interface SinglePrompt {
+  title: string;
+  prompt: string;
+}
+
+/**
+ * Per-platform cache for AI-generated prompts
+ */
+export interface PromptCache {
+  bolt: BoltPromptStep[] | null;
+  lovable: SinglePrompt | null;
+  v0: SinglePrompt | null;
+}
+
+/**
+ * Snapshot of selections used when generating (for stale detection)
+ */
+export interface SelectionsSnapshot {
+  websiteType: string;
+  styleId: string;
+  layoutId: string;
+  componentIds: string[];
+  prdText: string;
+}
+
+/**
+ * API request body for /api/generate-prompts
+ */
+export interface GeneratePromptsRequest {
+  prdText: string;
+  selections: {
+    websiteType: string;
+    visualStyle: string;
+    layout: string;
+    components: string[];
+  };
+  platform: Platform;
+}
+
+/**
+ * API response body from /api/generate-prompts
+ */
+export interface GeneratePromptsResponse {
+  bolt?: BoltPromptStep[];
+  lovable?: SinglePrompt;
+  v0?: SinglePrompt;
+  tokenUsage: {
+    prompt: number;
+    completion: number;
+    total: number;
+  };
 }
