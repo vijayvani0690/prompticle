@@ -99,14 +99,13 @@ export default function WizardPage() {
         </div>
       </div>
 
-      {/* Mobile Prompt Preview - Fixed at bottom */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg">
+      {/* Mobile Prompt Preview - Inline at bottom */}
+      <div className="lg:hidden container mx-auto px-4 pb-8">
         <PromptPreviewPanel
           wizardState={wizardState}
           prdInput={prdInput}
           selectedPlatform={selectedPlatform}
           onPlatformChange={setSelectedPlatform}
-          className="max-h-[300px]"
         />
       </div>
     </div>
